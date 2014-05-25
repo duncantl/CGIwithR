@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title></title>
+</head>
+
+<body>
+<h1></h1>
+
+
+<h3 align="justify">FAQ</h3>
+
+<p>
+<b>1.  Can CGIwithR be used with a web server running under Microsoft Windows?</b>  The short answer is no.  The longer answer is probably yes, provided that the web server supports CGI, and that standard unix tools (including <i>bash</i>) are installed, e.g., from <a href="http://www.cygwin.com">http://www.cygwin.com</a>. Probably some tweaking of the <i>R.cgi</i> shell script will also be needed.  
+
+<br>
+<b>News</b> March 2004: Adam Lyon kindly emailed me to say he has succeeded in getting CGIwithR to work under Windows.  The details are in file <i>windows.txt</i>.<br>
+<b>News</b> Oct 2004: File <i>windows.txt</i> is updated to include some further helpful advice from Kurt Sys.<br>
+<b>News</b> Sep 2005: File <a href="windows.txt">windows.txt</a> is updated to include yet more helpful advice from Carlos Rendon.
+
+
+</p>
+
+<p>
+<b>2.  When trying to use CGIwithR, for example with the <i>trivial.R</i> example, I get no response from the webserver and this error message in the httpd log file:
+<pre>
+    Premature end of script headers: /usr/var/cgi-bin/R.cgi
+</pre>
+Why?</b>  Almost certainly this is because one or more of <i>R.cgi</i>, <i>.Rprofile</i> and <i>trivial.R</i> has been put in the wrong place on your system.
+
+
+</p>
+<p>
+<b>3.  I have recently updated R and now my CGIwithR scripts don't work any more.  I have checked that my installed CGIwithR package is the latest version.  Any clues?</b>  Did you perhaps forget to install the new R.cgi file?  This comes inside the inst subdirectory of the CGIwithR package, and it needs to be installed in your "cgi-bin" (or whatever it's called on your system) directory.
+
+
+
+
+
+<hr>
+<address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
+<!-- hhmts start --> Last modified: Tue Nov 29 08:32:43 PST 2005 <!-- hhmts end -->
+</body> </html>

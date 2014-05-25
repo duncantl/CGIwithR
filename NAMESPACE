@@ -1,0 +1,23 @@
+export(
+ "HTMLheader",
+ "br",
+ "comments",
+ "img",
+ "indentPrint",
+ "lf",
+ "linkto",
+ "mailto",
+ "scanText",
+ "showEnvironmentVariables",
+ "tag",
+ "untag",
+ "webPNG",
+ "writeRequestInfo"
+)
+
+# These are currently not exported
+# "CGIparse","getMultiPartBoundary", "parseMultiPartFormData"
+# "stripQuotes", "splitDataString", "getParameters"
+# "startHTML",
+
+S3method("$", "MultiPartFormData")

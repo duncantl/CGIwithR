@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>Sample HTML form for group 1</title>
+</head>
+<body>
+
+This is a POST form to illustrate the mechanism of CGI.
+This performs a non-parametric bootstrap.
+The user  specifies the file containing the
+column of numbers
+or enters them into the text area.
+Then
+
+
+<!-- <form name="simulate" method="POST" action="/cgi-bin/test.pl" enctype="multipart/form-data">-->
+<!-- <form name="simulate" method="POST" action="/cgi-bin/R.cgi/bootstrap.R"> -->
+<form name="simulate" method="POST" action="/cgi-bin/R.cgi/bootstrap.R" enctype="multipart/form-data">
+
+<center>
+<table border="1">
+<tr><td>Inputs</td><td>Outputs</td></tr>
+<tr>
+<th>
+<table>
+<tr><th colspan=2>Enter data values here or use the Browse button to specify 
+a file containing the values.
+<br/></th></tr>
+<tr align="left">
+<th valign="top">
+<textarea name="values" rows="10"></textarea>
+<input type="file" name="dataFile" size="40" valign="top">
+</th>
+</tr>
+<tr align="left">
+<th>Statistic</th><th><select name="statistic" size="4">
+  <option value="mean">Mean
+  <option value="median">Median
+  <option value="min">Minimum
+  <option value="max">Maximum
+  <option value="function(x) 1/max(x)">1/Maximum
+</select></th>
+</tr>
+<tr align="left"><th>Number of iterations</th><th><input type="text" name="NumRep" value="1000" size="4" maxlength="6"></th></tr>
+</table>
+</th>
+<th>
+<table>
+<tr><th>Histogram</th><th><input type="checkbox" name="output" value="histogram" checked="checked"></th></tr>
+<tr><th>Summary</th><th> <input type="checkbox" name="output" value="summary" checked="checked"></th></tr>
+</table>
+</th>
+</tr>
+</table>
+</center>
+<p/>
+<center><input type="submit"></center>
+
+ <input type="hidden" name="R::script" value="simulate.S">
+
+</form>
+
+</body>
+</html>

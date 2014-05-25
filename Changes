@@ -1,0 +1,92 @@
+Version 0.73-0
+
+*  Identify the contents of file uploads with a class "FileUploadContent"
+
+*  Don't collapse duplicate parameter values that correspond to file uploads
+   in MultiPartFormData objects.
+
+*  $ operator for MultiPartFormData extended to handle the case of multiple
+   elements for the same parameter, specifically file uploads.
+
+*  Added parameters to some functions to allow caller to specify content 
+   of the submitted form that is usually provide via environment variables or standard 
+   in.  This facilitates debugging.
+
+Version 0.72-2
+
+*  Deal  with repeated parameters.
+
+
+****************************
+
+*  Handle multipart/form-data which is used in POST forms when the
+   contents of files are uploaded in the query.  This uses the parser for
+   this type of data and also a fix/change to the R.cgi script so that
+   the input on stdin is collected into FORM_DATA.  
+   Note:  This version doesn't handle the different encodings of the the
+   contents yet.
+
+*  R.cgi treats the POST method by taking the input from standard input
+   rather than the first command line argument ($1).  This handles both
+   regular and multipart form POSTs.
+
+*  Allow graphDir and graphURLroot to be specified as arguments
+   to webPNG() and img() respectively to override or avoid
+   the corresponding global variables.
+
+*  Examples for simulations/bootstraps for the different types of form
+   submission methods.
+
+*  Using a NAMESPACE file. 
+
+*  Will use GDD rather than ghostview (gs) if that package is available.
+
+*  Added functionality in cgi.R to allow the developer of the script more
+   control over the output. The only issue here is whether the R script
+   should be able emit the Content-type line that is currently emitted by
+   the R.cgi script.  If the output from the script starts with the
+   string "Content-type: ", then R.cgi does not emit its version.
+   This allows the user, for example, to return a data set as
+   regular text by writing
+
+   Content-type: text/plain
+
+   and then the regular output.
+   We could also use a hidden field in the form with a particular pattern
+   to determine whether to output the headers.
+
+*  HTMLheader() takes a title and css argument to add references to Cascading
+   Style Sheets and insert a TITLE element. It also outputs the 
+   <HTML><HEAD>.. </HEAD><BODY> tags. The endHTML() closes the BODY and HTML
+   elements.
+
+*  The img() function now returns the location of the file created by combining
+   graphURLroot with the name of the file.
+
+*  Some simple functions for add information about the request to the output of the
+   script.
+
+Incompatible changes:
+____________________
+
+
+Combine duplicate parameters in the query into a single character
+vector, e.g.  x=1&x=2&y=3 yields list(x=c("1", "2"), y = "3"), rather
+than requiring the unclass(formData)[names(formData) == "x"].  So the
+resulting formData() list can now have elements that are not simple
+scalar strings.
+
+If you need (or want) the previous behavior, use the command
+
+    R CMD INSTALL --configure-args='--enable-old-style-formdata' CGIwithR
+
+i.e. with the --enable-old-style-formdata flag for the configure script.
+
+
+Other suggestions:
+ Have functions return the data they construct, e.g. img() return the 
+ value of the src field rather than the less useful "image" string.
+ Perhaps also see the XML generation facilities in the XML package.
+
+
+

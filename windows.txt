@@ -1,0 +1,254 @@
+This file last updated 2005-09-03 
+(new comments from Carlos Rendon)
+
+--------------------------------------------------------
+--------------------------------------------------------
+Hi David,
+
+I have your CGIwithR package working on Microsoft Windows.
+Your web page asks that if someone got it to work, to tell
+you. So I'm sending you this message...
+
+My configuration is Windows XP, Windows R 1.8.1, Windows
+Apache (from EasyPHP  - but it's a plain old Win32 Apache
+[non-cygwin]), and Cygwin.
+
+I had to modify R.cgi a little to get things working:
+
+1)  The #! at the top needed to be... #!c:/cygwin/bin/sh   #
+  (yes, forward slashes are understood by windows apache and
+windows R)
+
+2) R_DEFAULT: I found that calling Rterm from Cygwin was
+problematic until I made a soft link to it in my home
+directory. For example, "ln -s /c/program\
+files/R/rw1081/bin/Rterm.exe /home/Adam/bin/Rterm.exe" Then
+R_DEFAULT=/home/Adam/bin/Rterm.exe  # (Note this is a
+cygwin-unix style path since sh will call it)
+
+3) R_GSCMD: One needs the *win32* variety of ghostscript
+(the cygwin version won't work because R is going to call
+it, and R won't have the cygwin dll's loaded). Its path must
+be a windows path. Note that there's gswin32 and gswin32c.
+Calling the former caused R to hang. Using the latter worked
+great (and this is the one R wants if you do "bitmap()")...
+R_GSCMD="c:/gs/gs8.00/bin/gswin32c"    # (Note the windows
+path and the c at the end)
+
+4) For some reason, the POST request method doesn't work.
+The QUERY_STRING always comes out to be blank. I don't know
+why this happens. So I just always use the GET method.
+
+5)  I also removed all your logic to figure out PATH_TO_R.
+That code seemed unable to figure out when you didn't supply
+the path in your .R file and ended up in an error. Since on
+windows one typically has R in a specific place, I figured
+one would rely on R_DEFAULT instead. So PATH_TO_R=$R_DEFAULT
+
+6) The windows Rterm doesn't have some of the command line
+options you use (--no-readline and --gui [the Rterm must do
+an implicit --gui]).  So the line I have is
+Rcall="$PATH_TO_R --no-restore --no-save --slave "
+
+7) I left in the R_NICE logic, but since I never set that
+nice is never called. I'm sure if R_NICE were set, it
+wouldn't work on windows.
+
+The only other tricky business was in my R script: to get
+images to come out right I had to set both graphDir and
+graphURLroot. If I did not set the latter, the image url
+came out to be "mycgi-bin/R.cgi/image.png".  The R.cgi
+messed things up.
+
+This is a very nice package you've written. Now that I have
+it working, I'm looking forward to using it.
+
+If you have any questions on the above, don't hesitate to
+send me e-mail. Thanks.
+
+Best Regards, Adam Lyon
+
+
+--------------------------------------------------------
+--------------------------------------------------------
+Hi David,
+
+your package is great... I used it for some time on Linux,
+but at work, I 'have to' use windows-servers. I wanted to
+install R and CGIwithR on the servers and it worked out
+using the guidelines of Adam Lyon.
+
+But I can add some small tips or hints or whatever you want
+to call it, because I had some problems, which are minor if
+I see it afterwards, but it took me hell a lot of time to
+find them :).
+
+1/ Instead of (soft) linking to '/c/program\
+files/R/rw2000/bin/Rterm.exe' (for making R_DEFAULT
+available), it had to be linked to '/cygwin/c/program\
+files/R/rw2000/bin/Rterm.exe' (maybe on other systems its
+different, but on my system, winxp SP2, cygwinNT-5.1 it was
+like that).
+
+... and everything but the figures worked!
+
+2/ And for the graphics... It's tricky. First of all, I had
+to set R_GSCMD in the system environments (which is logic,
+but I only found the problem when I was trying webPNG step
+by step in an R console and found out it didn't work). A
+second problem were the directories. Directories with spaces
+(and/or long directories; I don't know) don't work. So,
+instead of setting graphDir to 'c:/Program Files/Apache
+Group/Apache2/htdocs/graphs', I had to set it to
+'c:/Progra~1/Apache~1/Apache2/htdocs/graphs'.
+
+... and also the figures also worked! Great!
+
+greetz,
+Kurt Sys.
+
+
+--------------------------------------------------------
+--------------------------------------------------------
+David Firth,
+
+I would first like to thank you for writing and sharing the CGIwithR
+package, it is very effective and works beautifully "out of the box"
+on my Linux server.
+
+After struggling with getting CGIwithR to work on my Windows machine,
+despite the already posted windows tips, I had quite some difficulty
+and I thought that I would share some more advice on getting CGIwithR
+to work on Windows as well as include the R.cgi I am using (R.cgi is
+attached [below]).  The idea is that you could append this to your windows
+help text for the benefit of other users in the future.
+
+First and foremost I could not get the webPNG() function to work
+properly with Windows paths, but I found that calling bitmap() with
+the same options and a *full path* seemed to work equivalently. I also
+found that, when specifying Windows paths, using the DOS equivalents
+prevent errors that occur from spaces in directory names.  To find the
+DOS equivalent, open a command prompt and give the command dir /X. 
+DOS equivalents look like C:\PROGRA~1 , using DOS equivalents prevents
+path errors.  Instead of "C:\\Program\ Files\\Apache\ Group\\"
+use "C:\\PROGRA~1\\APACHE~2\\".  Hope this is helpful to others who may
+have difficulty with CGIwithR on windows or at least save them a few
+hours of work.
+
+Thank you,
+-- 
+Carlos Rendon
+#########################################
+Carlos Rendon's version of the R.cgi file
+#########################################
+#! /cygwin/bin/sh
+###  A shell script to make CGI scripting possible in R.  Part of the
+###  "CGIwithR" package for R.
+###
+###  Author: David Firth, University of Warwick 
+###  (d.firth@warwick.ac.uk)
+###
+###  Terms of use: GPL version 2 or later.  See "COPYING" in the
+###  R distribution.
+###
+###  NO WARRANTY GIVEN, AND NO LIABILITY ACCEPTED FOR LOSS CAUSED BY
+###  USE OF THIS PROGRAM
+###
+###
+###  INSTALLING IT:
+###
+###  This file, and the one-line ".Rprofile" file included with the
+###  package, must be placed together in a "cgi-bin" directory.  Both 
+###  files should be readable (and this file executable) by the web 
+###  server.
+###
+###
+###  CONFIGURING IT:
+###    
+###  First locate R on the local system (typically the answer 
+###  to "which R").  Individual R scripts may request execution by a  
+###  different, elsewhere-installed version of R; the R specified 
+###  here is the default.
+
+R_DEFAULT=Rterm
+
+###  Graphs can be included in the output provided that ghostscript
+###  is available.  Locate the local ghostscript program if available: 
+
+R_GSCMD="c:/gs/gs8.51/bin/gswin32c"
+export R_GSCMD
+
+###  The next two lines may optionally be edited to limit access
+###  to local resources.
+###
+###  This line allows specification of the priority
+###  given to the R process.  A nice of "0" is the normal  
+###  priority, while e.g. "+10" causes R to be run as a 
+###  low-priority process.  The value "NONE" should be given if  
+###  nice is not implemented locally.
+
+R_NICE=NONE
+
+###  This line allows the imposition of a length limit on the data
+###  entered on an HTML form for processing by an R script.  
+###  Setting MAX_DATA_LENGTH=1000, for example, aborts  
+###  execution if the data length exceeds 1000 characters.  Or
+###  use MAX_DATA_LENGTH=NONE to impose no limit here.
+
+MAX_DATA_LENGTH=10000
+
+###  No further configuration is needed.  
+###
+###  It is assumed that the CGIwithR package is installed in the  
+###  standard library of the R installation.
+###
+###  See the documentation included with the CGIwithR package for 
+###  more details, examples of use, etc.
+
+###################################################################
+###################################################################
+
+###  The script proper begins here.
+###
+echo "Content-type: text/html"; echo
+
+###  Check that the data length does not exceed our limit (if any):
+
+case $REQUEST_METHOD in
+GET) FORM_DATA=$QUERY_STRING; 
+     CONTENT_LENGTH=`/bin/expr "$FORM_DATA" : '.*'` ;;
+POST) FORM_DATA=`/bin/cat $1` ;;
+esac
+export FORM_DATA
+
+case $MAX_DATA_LENGTH in
+NONE)  ;;
+none)  ;;
+*)    if test $CONTENT_LENGTH -gt $MAX_DATA_LENGTH
+        then echo "Error: too much data"; exit 1
+      fi ;;
+esac
+
+###  Construct the full path to the R script to be run:
+
+PWD=`/bin/pwd`
+PATH_TRANSLATED=$PWD$PATH_INFO
+export PATH_TRANSLATED
+
+###  Finally, call R to execute the script and send back the results:
+
+Rcall="$R_DEFAULT --no-save  --slave"
+
+THE_RESULTS=`case $R_NICE in
+NONE) $Rcall < $PATH_TRANSLATED ;;
+none) $Rcall < $PATH_TRANSLATED ;;
+*) nice -n $R_NICE $Rcall < $PATH_TRANSLATED ;;
+esac`
+
+echo "$THE_RESULTS"
+################################################
+End of Carlos Rendon's version of the R.cgi file
+################################################
+
+--------------------------------------------------------
+--------------------------------------------------------

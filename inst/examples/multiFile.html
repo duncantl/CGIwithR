@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>Sample HTML form for group 1</title>
+</head>
+<body>
+
+This is a POST form to illustrate the mechanism of CGI.
+
+
+<form name="simulate" method="POST" action="http://eeyore.ucdavis.edu/cgi-bin/R.cgi/multiFile.R" enctype="multipart/form-data">
+Select one or more files:
+<input type="file" name="dataFile" multiple="true">
+<input type="submit">
+<br/>
+<input type="checkbox" name="foo" value="First one" checked="true">A</input>
+<input type="checkbox" name="foo" value="Second one">B</input>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<html>
+<head>
+<title>Sample HTML form</title>
+</head>
+<body>
+
+This is a simple GET form to illustrate the mechanism of CGI.  This
+performs a simple simulation of the central limit theorem by allowing the user to select a
+distribution, the sample size, the number of repetitions and the statistic of interest.
+<p/>
+The script for processing the form 
+is available <a href="simulation.R">here</a>.
+It generates NumRep samples from the specified distribution, each of size n.
+Then it determines whether the user wants a numerical summary (summary) and/or a graphical summary.
+
+<p/>
+
+<form name="simulate" method="GET" action="/cgi-bin/R.cgi/simulation.R"> 
+
+<center>
+<table border="1">
+<tr align="center"><td>Inputs</td><td>Outputs</td></tr>
+<tr>
+<th>
+<table>
+
+<tr align="left">
+<th>Distribution</th><th> <select name="distribution" size="1">
+  <option value="rnorm">Normal
+  <option value="rbinom">Binomial
+  <option value="rpois">Poisson
+ </select>
+</th>
+</tr>
+<tr align="left">
+<th>Sample size</th><th><input type="text" name="n" value="3" size="4" maxlength="6"></th></tr>
+
+<tr align="left">
+<th>Statistic</th><th><select name="statistic" size="3">
+  <option value="mean">Mean
+  <option value="median">Median
+  <option value="min">Minimum
+  <option value="max">Maximum
+</select></th></tr>
+<tr align="left"><th>Number of iterations</th><th><input type="text" name="NumRep" value="1000" size="4" maxlength="6"></th></tr>
+</table>
+</th>
+
+<th>
+<table>
+<tr><th>Histogram</th><th><input type="checkbox" name="output" value="histogram" checked="checked"></th></tr>
+<tr><th>Summary</th><th> <input type="checkbox" name="output" value="summary" checked="checked"></th></tr>
+</table>
+</th>
+</tr>
+
+</table>
+</center>
+
+<p/>
+<center><input type="submit"></center>
+
+ <input type="hidden" name="R::script" value="simulate.S">
+ <input type="hidden" name="showAttribution" value="TRUE">
+</form>
+
+<center><hr width="50%"></center>
+
+</body>
+</html>
