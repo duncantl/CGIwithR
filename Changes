@@ -1,3 +1,14 @@
+Version 0.74-0
+
+*  Added Rbigpost.cgi which handles POST submissions by redirecting the input to the .cgi script
+   directly to the R session so that it can be read there. 
+   This avoids exceeding shell limits for large data submissions
+
+*  The package reads the submission from standard input if it is not provided by the FORM_DATA 
+    environment variable, or any WWW_ variables. This is how Rbigpost.cgi hands the submission
+    to R.  There is no change for the script writer to deal with - the formData variable is 
+    merely constructed automatically in a different way.
+
 Version 0.73-0
 
 *  Identify the contents of file uploads with a class "FileUploadContent"
