@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>CGIwithR</title>
+</head>
+
+<body>
+<h1>CGIwithR package</h1>
+
+<p align=right>Latest Version: <a href="CGIwithR_0.74-0.tar.gz" >0.74-0</a></p>
+<p align=right>Download: <a href="CGIwithR_0.74-0.tar.gz" >CGIwithR.tar.gz</a></p>
+<p align=right><a href="https://github.com/duncantl/CGIwithR">on
+github</a></p>
+
+This package allows one to use R scripts as CGI programs for
+generating dynamic Web content.  HTML forms and other mechanisms to
+submit dynamic requests can be used to provide input to R scripts via
+the Web to create content that is determined within that R script.
+Recent changes (May 2014) provide support for handling large
+amounts of data in a POST submission. via a different CGI handler Rbigpost.cgi.
+
+<p>
+
+The latest version introduces some slight user-level incompatibilities
+from the previous version. Specifically, if multiple values are
+submitted for a parameter (e.g. two or more checkbox elements are
+selected in an HTML form), the corresponding <b>formData</b> element
+is a character vector containing all of these values, not just the
+first.  This makes it easier to access them all.  The original
+mechanism is still available
+and can be selected when the package is installed
+via the flag <code>--enable-old-style-formdata</code>
+for the configure script.
+One can do this with a command such as
+<pre>
+  R CMD INSTALL --configure-args='--enable-old-style-formdata' CGIwithR_0.72.tar.gz
+</pre>
+
+
+
+<h3>Origins of the Package</h3>
+
+The package was originally written by <a
+href="http://www.warwick.ac.uk/go/dfirth">David Firth</a> at the
+University of Oxford and now at the University of Warwick.  In
+November '05, Duncan Temple Lang extended it, primarily to handle
+multipart/form-data POST submissions.  I (DTL) am responsible for the
+package now, but David deserves the credit for the package.
+
+
+<h3>Documentation</h3>
+
+<dl>
+  <dt>
+    <li>JSS paper
+       <a href="http://www.jstatsoft.org/v08/i10/paper">CGIwithR: Facilities for processing Web forms using R</a>
+  </li>
+  <dd>
+    David's paper in JSS on CGIwithR.
+    Citation. CGIwithR: Facilities for processing Web forms using R.
+      Journal of Statistical Software,  8(10), pp. 1-8, 2003.
+  <dt>
+  <li><a href="http://www.warwick.ac.uk/go/cgiwithr" >David's original CGIwithR page</a></li>
+  <dd>
+
+  <dt>
+  <li><a href="RCGI.pdf" >A lecture on aspects of using CGI</a></li>
+  <dd> An introduction to the basic architecture of
+      forms and CGI scripts, and using CGIwithR.
+      This includes some suggestions on how to debug R CGI scripts.
+
+  <dt>
+  <li><a href="Examples" >Examples</a></li>
+  <dd>
+      Some examples of HTML forms and corresponding R scripts.
+      These cover GET and POST and multipart/form-data submissions.
+
+  <dt>
+  <li><a href="Changes" >Recent Changes</a></li>
+  <dd>
+  <dt>
+  <li><a href="FAQ.html" >FAQ</a></li>
+  <dd>    
+</dl>      
+
+
+
+<hr>
+<address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@r-project.org&gt;</a></address>
+<!-- hhmts start -->Last modified: Fri May 30 2014<!-- hhmts end -->
+</body> </html>
