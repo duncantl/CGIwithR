@@ -76,7 +76,7 @@ function(boundary, content = readLines(stdin()), collapseBody = "\n",
     # If the content was not specified, read it from the standard input.
     # This would be used if we were calling R directly rather than indirectly
     # via R.cgi.  This may happen soon.
-    # If the cotent is specified ans so is sep, then we need to break
+    # If the content is specified and so is sep, then we need to break
     # the string into a vector of lines. So we split first by new line
     # and then by control-feed.  The reason for doing this in two steps
     # is that the contents of a file may be embedded within the input and
