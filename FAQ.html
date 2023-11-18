@@ -33,6 +33,20 @@ Why?</b>  Almost certainly this is because one or more of <i>R.cgi</i>, <i>.Rpro
 <b>3.  I have recently updated R and now my CGIwithR scripts don't work any more.  I have checked that my installed CGIwithR package is the latest version.  Any clues?</b>  Did you perhaps forget to install the new R.cgi file?  This comes inside the inst subdirectory of the CGIwithR package, and it needs to be installed in your "cgi-bin" (or whatever it's called on your system) directory.
 
 
+<p>
+<b>4. I am getting messages in the Web server's error log of the form <code>cat argument list too long</code></b>
+See 5. - How do I deal with large POST submissions.
+
+
+<p>
+<b>5.  How do I deal with large POST submissions?</b>
+Don't use R.cgi, but rather Rbigpost.cgi.
+That is the form should submit to
+<code>http://..../cgi-bin/Rbigpost.cgi/myScript.R</code>
+rather than <code>http://..../cgi-bin/R.cgi/myScript.R</code>.
+This handles passing the data to the code in myScript.R
+in a different way that overcomes restrictions by the
+UNIX shell on the size of data being processed.
 
 
 
