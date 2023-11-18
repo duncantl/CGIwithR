@@ -254,10 +254,22 @@ indentPrint <- function(object, indent = 4, ...){
     if (formData == "") {  ## probably uncgi has been used
         Env <- Sys.getenv()
         Names <- names(Env)
-        formData <<- as.list(Env[grep("^WWW\\_", Names)])
-        names(formData) <<- sapply(names(formData), function(name){
-                                    gsub("^WWW\\_", "", name)})
+        if(any(grepl("^WWW_", Names))) {
+            formData <<- as.list(Env[grep("^WWW\\_", Names)])
+            names(formData) <<- gsub("^WWW\\_", "", names(formData))
+        } else {
+            formData <- readStdInput()
+            formData <<- CGIparse(formData)
+        }
     }   
     else formData <<- CGIparse(formData)
-    }
+}
 
+readStdInput =
+function()
+{
+  f = file("stdin")
+  open(f)
+  on.exit(close(f))
+  paste(readLines(f), collapse = "\n")
+}
